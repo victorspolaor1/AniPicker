@@ -3,6 +3,26 @@ import 'package:flutter/material.dart';
 import 'homepage.dart';
 
 void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Home(),
+    );
+  }
+}
+
+/*import 'package:flutter/material.dart';
+
+import 'homepage.dart';
+
+void main() {
   runApp(MyApp());
 }
 
@@ -27,7 +47,7 @@ class _LoginDemoState extends State<LoginDemo> {
     return Scaffold(
       backgroundColor: Colors.white,
       //AppBar
-      appBar: AppBar( title: const Text("Login Page"),),
+      appBar: AppBar( title: const Text("AniPicker"),),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -93,10 +113,21 @@ class _LoginDemoState extends State<LoginDemo> {
             const SizedBox(
               height: 130,
             ),
-            const Text('New User? Create Account')
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text('New User?'),
+                TextButton(child: const Text('Create account', style: TextStyle(fontSize: 15),
+                ),
+                  onPressed: () {
+
+                  },
+                )
+              ],
+            )
           ],
         ),
       ),
     );
   }
-}
+}*/

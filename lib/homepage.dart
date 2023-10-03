@@ -1,72 +1,148 @@
 import 'package:flutter/material.dart';
+import 'login.dart';
+import 'signup.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(home: Navigation());
-  }
-}
-
-class Navigation extends StatefulWidget {
-  const Navigation({super.key});
-
-  @override
-  State<Navigation> createState() => _NavigationState();
-}
-
-class _NavigationState extends State<Navigation> {
-  int currentPageIndex = 0;
+class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Homepage'),
+      backgroundColor: const Color.fromARGB(201, 255, 255, 255),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top:60.0),
+                    child: Center(
+                      child: Container(
+                        width: 400,
+                        height: 250,
+                        child: Image.asset('../asset/images/anipicker-logo.PNG'),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 50.0),
+                    child: Container(
+                      width: 209,
+                      height: 70,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 255, 0, 0),
+                          width: 4,
+                        ),
+                        borderRadius: BorderRadius.circular(40),
+                        gradient: const LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color.fromRGBO(241, 240, 241, 1),
+                              Color.fromRGBO(254, 254, 255, 1),
+                              Color.fromRGBO(179, 177, 179, 1),
+                              Color.fromRGBO(112, 111, 112, 1)
+                            ]),
+                      ),
+                      child: MaterialButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Login()));
+                        },
+                        child: const Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 15.0),
+                              child: Text(
+                                'Log in    ',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Pacifico-Regular',
+                                ),
+                              ),
+                            ),
+                            Icon(
+                              Icons.keyboard_arrow_right,
+                              size: 40,
+                              color: Color.fromARGB(255, 255, 0, 0),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 50.0),
+                    child: Container(
+                      width: 209,
+                      height: 70,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 250, 0, 0),
+                          width: 4,
+                        ),
+                        borderRadius: BorderRadius.circular(40),
+                        gradient: const LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color.fromRGBO(241, 240, 241, 1),
+                              Color.fromRGBO(254, 254, 255, 1),
+                              Color.fromRGBO(179, 177, 179, 1),
+                              Color.fromRGBO(112, 111, 112, 1)
+                            ]),
+                      ),
+                      child: MaterialButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignUp()));
+                        },
+                        child: const Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 15.0),
+                              child: Text(
+                                'Register',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Pacifico-Regular',
+                                ),
+                              ),
+                            ),
+                            Icon(
+                              Icons.keyboard_arrow_right,
+                              size: 40,
+                              color: Color.fromARGB(255, 255, 0, 0),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-        indicatorColor: Colors.amber[800],
-        selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
-          NavigationDestination(
-            selectedIcon: Icon(Icons.home),
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.repeat),
-            label: 'Anime random picker',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.school),
-            icon: Icon(Icons.view_list),
-            label: 'Animes watched',
-          ),
-        ],
-      ),
-      body: <Widget>[
-        Container(
-          color: Colors.white,
-          alignment: Alignment.center,
-          child: const Text('Page 1'),
-        ),
-        Container(
-          color: Colors.white,
-          alignment: Alignment.center,
-          child: const Text('Page 2'),
-        ),
-        Container(
-          color: Colors.white,
-          alignment: Alignment.center,
-          child: const Text('Page 3'),
-        ),
-      ][currentPageIndex],
     );
   }
 }
