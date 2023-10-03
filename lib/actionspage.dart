@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'action-pages/account.dart';
+import 'action-pages/animeswatched.dart';
+import 'action-pages/randompicker.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -20,9 +23,9 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
-  int currentPageIndex = 0;
+  int index = 0;
 
-  @override
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -40,119 +43,36 @@ class _NavigationState extends State<Navigation> {
           ),
         ),
       ),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
+      body: IndexedStack(
+        index: index,
+        children: [
+          Account(),
+          RandomPicker(),
+          AnimesWatched(),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: index,
+        onTap: (int newindex) {
           setState(() {
-            currentPageIndex = index;
+            index = newindex;
           });
         },
-        indicatorColor: Colors.red,
-        selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
-          NavigationDestination(
-            selectedIcon: Icon(Icons.home),
+        items: const [
+          BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Perfil',
+            label: "Account",
           ),
-          NavigationDestination(
+          BottomNavigationBarItem(
             icon: Icon(Icons.repeat),
-            label: 'Anime random picker',
+            label: 'Random picker'
           ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.school),
-            icon: Icon(Icons.view_list),
-            label: 'Animes watched',
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Animes watched",
           ),
         ],
       ),
-      body: <Widget>[
-        Container(
-          color: Colors.white,
-          alignment: Alignment.center,
-          child: const Text('Page 1'),
-        ),
-        Container(
-          color: Colors.white,
-          alignment: Alignment.center,
-          child: SizedBox(
-            width: 200,
-            child: Row(
-              children: [
-                Expanded(
-                  child: ListTile(
-                    title: const Text('Year'),
-                    subtitle: TextFormField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8),
-                          ),
-                        ),
-                        hintText: 'Year that the anime was released',
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 200,
-                ),
-                Expanded(
-                  child: ListTile(
-                    title: const Text('Year'),
-                    subtitle: TextFormField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8),
-                          ),
-                        ),
-                        hintText: 'Year that the anime was released',
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ) 
-          ),
-        ),
-        Container(
-          color: Colors.white,
-          alignment: Alignment.center,
-          child: const Text('Page 3'),
-        ),
-      ][currentPageIndex],
     );
   }
 }
-
-/*
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Page'),
-      ),
-      body: Center(
-        child: Container(
-          height: 80,
-          width: 150,
-          decoration: BoxDecoration(
-              color: Colors.blue, borderRadius: BorderRadius.circular(10)),
-          child: TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text(
-              'Welcome',
-              style: TextStyle(color: Colors.white, fontSize: 25),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}*/

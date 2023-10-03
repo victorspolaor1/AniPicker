@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'homepage.dart';
 
+List<IconData> icon = [Icons.photo, Icons.video_call, Icons.video_library, Icons.add_circle];
+List<bool> isSelected = List.generate(4, (index) => false);
+List<String> innerText = ['All', 'Photo', 'Video', 'Reel', 'Story'];
+
 void main() {
   runApp(const MyApp());
 }
