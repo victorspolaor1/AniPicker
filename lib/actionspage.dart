@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'action-pages/account.dart';
+import 'action-pages/userpage.dart';
 import 'action-pages/animeswatched.dart';
 import 'action-pages/randompicker.dart';
 
@@ -46,7 +46,7 @@ class _NavigationState extends State<Navigation> {
       body: IndexedStack(
         index: index,
         children: [
-          Account(),
+          ProfilePage(),
           RandomPicker(),
           AnimesWatched(),
         ],
