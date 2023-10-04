@@ -14,7 +14,7 @@ class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(204, 255, 255, 255),
+        backgroundColor: const Color.fromARGB(204, 255, 255, 255),
         body: Stack(
           children: [
             

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AnimesWatched extends StatelessWidget {
-  AnimesWatched({Key? key}) : super(key: key);
+  const AnimesWatched({Key? key}) : super(key: key);
 
-  final email = TextEditingController();
-  final pass = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -14,3 +12,4 @@ class AnimesWatched extends StatelessWidget {
     );
   }
 }
+
