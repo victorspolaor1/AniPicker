@@ -13,6 +13,7 @@ class _RandomPickerState extends State<RandomPicker> {
   String dropdownValue2 = '0';
   String dropdownValue3 = '75+';
   bool showText = false;
+  bool showButton = false;
   
   @override
   Widget build(BuildContext context) {
@@ -99,12 +100,14 @@ class _RandomPickerState extends State<RandomPicker> {
               onPressed: () {
                 setState(() {
                   showText = !showText;
+                  showButton = !showButton;
                 });
               },
               child: const Text(
                 'Submit',
               ),
             ),
+              //ShowText
             const SizedBox(
               height: 40,
             ),
@@ -112,10 +115,29 @@ class _RandomPickerState extends State<RandomPicker> {
               'Demon Slayer (Kimetsu no Yaiba)',
               style: TextStyle(
                 fontSize: 25,
-                color: Colors.red,
+                color: Color.fromARGB(255, 41, 40, 40),
                 fontFamily: 'Satisfy-Regular',
                 ),
-              ) : const Spacer()
+              ) : const Spacer(),
+
+            const SizedBox(
+              height: 20,
+            ),
+            showButton ? Column (
+              children: [
+                TextButton(
+                onPressed: () {
+                  setState(() {
+                    showText = false;
+                    showButton = false;
+                  });
+                },
+                child: const Text(
+                  'Roll again',
+                  ),
+                ),
+              ],
+            ) : const Spacer (),
           ],
         ),
       ),
@@ -123,4 +145,3 @@ class _RandomPickerState extends State<RandomPicker> {
     //throw UnimplementedError();
   }
 }
-  
