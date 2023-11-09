@@ -36,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget buildName(UserModel user) => Column(
+  Widget buildName(User user) => Column(
         children: [
           Text(
             user.name,
@@ -50,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       );
 
-  Widget buildAbout(UserModel user) => Container(
+  Widget buildAbout(User user) => Container(
         padding: EdgeInsets.symmetric(horizontal: 48),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

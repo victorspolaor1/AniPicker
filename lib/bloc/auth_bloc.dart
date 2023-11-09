@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../provider/firebase_auth.dart';
-import '../model/user.dart';
+import '../model/userModel.dart';
 import '../provider/firebase_firestore.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {

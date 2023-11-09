@@ -1,4 +1,6 @@
+import 'package:anipicker/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradient_borders/input_borders/gradient_outline_input_border.dart';
 import 'signup.dart';
 import 'actionspage.dart';
@@ -84,6 +86,9 @@ class Login extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
+
+                         BlocProvider.of<AuthBloc>(context)
+                    .add(LoginUser(username: email, password: pass));
                         Navigator.push(
                           context, 
                           MaterialPageRoute(builder: (context) => SignUp()),
