@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/auth_bloc.dart';
 import 'homepage.dart';
 import 'package:flutter/services.dart';
 
@@ -18,9 +20,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Home(),
+      home:MultiBlocProvider(providers: [
+          BlocProvider(create: (context) => AuthBloc()),
+        ], child: const Home())
     );
+    
   }
 }
