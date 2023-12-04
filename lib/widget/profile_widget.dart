@@ -1,13 +1,11 @@
-
+/*
 import 'package:flutter/material.dart';
 
 class ProfileWidget extends StatelessWidget {
-  final String imagePath;
   final VoidCallback onClicked;
 
   const ProfileWidget({
     Key? key,
-    required this.imagePath,
     required this.onClicked,
   }) : super(key: key);
 
@@ -52,7 +50,7 @@ class ProfileWidget extends StatelessWidget {
         child: buildCircle(
           color: color,
           all: 8,
-          child: Icon(
+          child: const Icon(
             Icons.edit,
             color: Colors.white,
             size: 20,
@@ -72,4 +70,4 @@ class ProfileWidget extends StatelessWidget {
           child: child,
         ),
       );
-}
+}*/
