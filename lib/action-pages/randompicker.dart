@@ -1,5 +1,23 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:anipicker/model/randomanimes_model.dart';
+import 'package:http/http.dart' as http;
+
+Future<List<RandomAnime>> fetchAnime(http.Client client) async {
+  final response = await client
+    .get(Uri.parse('https://api.jikan.moe/v4/seasons/now'));
+
+    return compute(parseAnime, response.body);
+}
+
+List<RandomAnime> parseAnime(String responseBody) {
+  final parsed = (jsonDecode(responseBody) as List).cast<Map<String, dynamic>>();
+  
+  return parsed.map<RandomAnime>((json) => RandomAnime.fromJson(json)).toList();
+}
 
 class RandomPicker extends StatefulWidget {
   const RandomPicker({Key? key}) : super(key: key);
@@ -9,9 +27,6 @@ class RandomPicker extends StatefulWidget {
 }
 
 class _RandomPickerState extends State<RandomPicker> {
-  String dropdownValue1 = 'None';
-  String dropdownValue2 = '0';
-  String dropdownValue3 = '75+';
   bool showText = false;
   bool showButton = false;
   
@@ -21,105 +36,37 @@ class _RandomPickerState extends State<RandomPicker> {
       body: Center(
         child: Column(
           children: [
-            const SizedBox(
+            Container(
               height: 50,
-            ),
-            const Text(
-              'Genre',
-              style: TextStyle(fontSize:15),
-            ),
-            DropdownButton<String>(              
-              value: dropdownValue1,              
-              items: <String>['Action','Adventure','Romance','Sci-fi','School life','Shounen', 'Seinen', 'Shojo','None']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: const TextStyle(fontSize: 15),
-                  ),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  dropdownValue1 = newValue!;
-                });
-              },
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              'Number of episodes',
-              style: TextStyle(fontSize:15),
-            ),
-            DropdownButton<String>(              
-              value: dropdownValue2,              
-              items: <String>['12','24','50+','100+','200+','500+', '1000+', 'Airing','0']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: const TextStyle(fontSize: 15),
-                  ),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  dropdownValue2 = newValue!;
-                });
-              },
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              'Age rating',
-              style: TextStyle(fontSize:15),
-            ),
-            DropdownButton<String>(              
-              value: dropdownValue3,              
-              items: <String>['ALL','16+','17+','18+','75+',]
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: const TextStyle(fontSize: 15),
-                  ),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  dropdownValue3 = newValue!;
-                });
-              },
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  showText = !showText;
+              width: 250,
+              decoration: BoxDecoration(
+                color: Colors.red, borderRadius: BorderRadius.circular(22)),
+              child: TextButton(
+                onPressed: () {
                   showButton = !showButton;
-                });
+                  FutureBuilder<List<RandomAnime>>(
+                    future: fetchAnime(http.Client()),
+                    builder: (context, snapshot) {
+                      if(snapshot.hasError) {
+                        return const Center(
+                          child: Text('Error occurred!'),
+                        );
+                      } else if(snapshot.hasData) {
+                        return AnimesList(animes: snapshot.data!);
+                      } else {
+                        return const Center(child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                );                 
               },
               child: const Text(
-                'Submit',
+                'Find a new anime for me',
+                style: TextStyle(color: Colors.white, fontSize: 20,),
+              ),
               ),
             ),
               //ShowText
-            const SizedBox(
-              height: 40,
-            ),
-            showText ? const Text(
-              'Demon Slayer (Kimetsu no Yaiba)',
-              style: TextStyle(
-                fontSize: 25,
-                color: Color.fromARGB(255, 41, 40, 40),
-                fontFamily: 'Satisfy-Regular',
-                ),
-              ) : const Spacer(),
-
             const SizedBox(
               height: 20,
             ),
@@ -143,5 +90,24 @@ class _RandomPickerState extends State<RandomPicker> {
       ),
     );
     //throw UnimplementedError();
+  }
+}
+
+class AnimesList extends StatelessWidget {
+  const AnimesList({super.key, required this.animes});
+
+  final List<RandomAnime> animes;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+      ),
+      itemCount: animes.length,
+      itemBuilder: (context, index) {
+        return Image.network(animes[index].image);
+      },
+    );
   }
 }

@@ -1,39 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:anipicker/model/watchedanimes_model.dart';
 
-class ToDoElement {
-  String task;
+class AnimeElement {
+  String animeName;
   final DateTime timeOfCreation;
 
-  ToDoElement(this.task, this.timeOfCreation);
+  AnimeElement(this.animeName, this.timeOfCreation);
 }
 
-void main() => runApp(MaterialApp(home: AnimesWatched()));
+void main() => runApp(const MaterialApp(home: AnimesWatched()));
 
 class AnimesWatched extends StatefulWidget {
+  const AnimesWatched({super.key});
+
   @override
   createState() => MyAppState();
 }
 
 class MyAppState extends State<AnimesWatched> {
-  List<ToDoElement> _toDoItems = [];
-  TextEditingController _controller = TextEditingController();
-  TextEditingController _controller1 = TextEditingController();
+  final List<AnimeElement> _toDoItems = [];
+  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller1 = TextEditingController();
 
-  void _addToDoItem(String task) {
+  final List<WatchedAnimes> listWatchedAnimes = [
+    WatchedAnimes(id: "AN001", animeWatched: "Kimetsu", date: "02/10/2023"),
+    WatchedAnimes(id: 'AN002', animeWatched: "Naruto", date: "03/11/2022")
+  ];
+
+  void _addAnimeItem(String task) {
     if (task.isNotEmpty) {
       setState(() {
-        _toDoItems.add(ToDoElement(task, DateTime.now()));
+        _toDoItems.add(AnimeElement(task, DateTime.now()));
       });
     }
   }
 
-  void _editToDoItem(String newText, int index) {
+  void _editAnimeItem(String newText, int index) {
     setState(() {
-      _toDoItems[index].task = newText;
+      _toDoItems[index].animeName = newText;
     });
   }
 
-  void _removeTodoItem(int index) {
+  void _removeAnimeItem(int index) {
     setState(() => _toDoItems.removeAt(index));
   }
 
@@ -54,7 +62,7 @@ class MyAppState extends State<AnimesWatched> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                       height: 60,
                       child: TextField(
                         controller: _controller,
@@ -94,7 +102,7 @@ class MyAppState extends State<AnimesWatched> {
                         ),
                       ),
                       onPressed: () {
-                        _editToDoItem(_controller.text, index);
+                        _editAnimeItem(_controller.text, index);
                         FocusScope.of(context).requestFocus(FocusNode());
                       },
                     ),
@@ -106,7 +114,7 @@ class MyAppState extends State<AnimesWatched> {
         });
   }
 
-  Widget _buildToDoItem(String toDoText, int index) {
+  Widget _buildEditAnimeWatchedItem(String toDoText, int index) {
     return SizedBox(
       child: Container(
         height: 58,
@@ -128,7 +136,7 @@ class MyAppState extends State<AnimesWatched> {
                   toDoText,
                   style: const TextStyle(fontSize: 18),
                 ),
-                onTap: () => null,
+                onTap: () {},
               ),
             ),
             TextButton(
@@ -143,7 +151,7 @@ class MyAppState extends State<AnimesWatched> {
                 'Delete',
                 style: TextStyle(color: Colors.red, fontSize: 16.5),
               ),
-              onPressed: () => _removeTodoItem(index),
+              onPressed: () => _removeAnimeItem(index),
             ),
           ],
         ),
@@ -151,17 +159,17 @@ class MyAppState extends State<AnimesWatched> {
     );
   }
 
-  int compareElement(ToDoElement a, ToDoElement b) =>
+  int compareElement(AnimeElement a, AnimeElement b) =>
       a.timeOfCreation.isAfter(b.timeOfCreation) ? -1 : 1;
 
-  Widget _buildToDoList() {
+  Widget _buildAnimeWatchedItem() {
     _toDoItems.sort(compareElement);
     return Expanded(
       child: ListView.builder(
         itemCount: _toDoItems.length,
         itemBuilder: (context, index) {
           if (index < _toDoItems.length) {
-            return _buildToDoItem(_toDoItems[index].task, index);
+            return _buildEditAnimeWatchedItem(_toDoItems[index].animeName, index);
           }
           return null;
         },
@@ -199,13 +207,13 @@ class MyAppState extends State<AnimesWatched> {
               children: [
                 Expanded(
                   flex: 10,
-                  child: Container(
+                  child: SizedBox(
                     height: double.infinity,
                     child: TextField(
                       controller: _controller1,
                       autofocus: true,
                       onSubmitted: (val) {
-                        _addToDoItem(val);
+                        _addAnimeItem(val);
                         _controller1.clear();
                       },
                       style: const TextStyle(
@@ -235,11 +243,11 @@ class MyAppState extends State<AnimesWatched> {
                       child: TextButton(
                         child: const Text(
                           'ADD',
-                          style: TextStyle(color: Colors.white, fontSize: 16.5
-                          ),
+                          style: 
+                          TextStyle(color: Colors.white, fontSize: 16.5),
                         ),
                         onPressed: () {
-                                  _addToDoItem(_controller1.text);
+                                  _addAnimeItem(_controller1.text);
                                   _controller1.clear();
                         FocusScope.of(context).requestFocus(FocusNode());
                         },
@@ -249,7 +257,13 @@ class MyAppState extends State<AnimesWatched> {
               ],
             ),
           ),
-          _buildToDoList()
+          _buildAnimeWatchedItem(),
+          Column(
+            children: List.generate(listWatchedAnimes.length, (index){
+              WatchedAnimes animes = listWatchedAnimes[index];
+              return Text(animes.animeWatched);
+            }),
+          ),
         ]),
       ),
     );

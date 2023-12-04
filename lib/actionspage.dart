@@ -45,7 +45,7 @@ class _NavigationState extends State<Navigation> {
       ),
       body: IndexedStack(
         index: index,
-        children: [
+        children: const [
           ProfilePage(),
           RandomPicker(),
           AnimesWatched(),

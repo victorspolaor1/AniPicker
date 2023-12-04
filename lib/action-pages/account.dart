@@ -10,7 +10,7 @@ class Account extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       /// backgroundColor: Color.fromRGBO(58, 0, 95, .81),
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
     );
   }
 }

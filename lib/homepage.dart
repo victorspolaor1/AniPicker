@@ -20,7 +20,7 @@ class Home extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top:60.0),
                     child: Center(
-                      child: Container(
+                      child: SizedBox(
                         width: 400,
                         height: 250,
                         child: Image.asset('../asset/images/anipicker-logo.PNG'),
@@ -55,7 +55,7 @@ class Home extends StatelessWidget {
                         ),
                         onPressed: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Login()));
+                              MaterialPageRoute(builder: (context) => const Login()));
                         },
                         child: const Row(
                           children: [
@@ -111,7 +111,7 @@ class Home extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SignUp()));
+                                  builder: (context) => const SignUp()));
                         },
                         child: const Row(
                           children: [
