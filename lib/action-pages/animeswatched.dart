@@ -1,6 +1,5 @@
 import 'package:anipicker/global.dart';
 import 'package:flutter/material.dart';
-import 'package:anipicker/model/watchedanimes_model.dart';
 import 'package:anipicker/providers/anime.dart';
 
 class AnimeElement {

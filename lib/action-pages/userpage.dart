@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:anipicker/widget/appbar_widget.dart';
 import 'package:anipicker/widget/numbers_widget.dart';
@@ -65,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
    Widget buildName() => Column(
         children: [
           Text(
-            userName ?? 'Loading...', // Display a placeholder or loading text
+            userName ?? 'Loading...',
             style: const TextStyle(fontSize: 18),
           ),
         ],
@@ -74,13 +73,20 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget buildEmail() => Column(
         children: [
           Text(
-            userEmail ?? 'Loading...', // Display a placeholder or loading text
+            userEmail ?? 'Loading...',
             style: const TextStyle(fontSize: 14, color: Colors.blueGrey),
           ),
         ],
       );
 
   Widget buildAbout() => Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.transparent,
+          border: Border.all(
+            color: Colors.red
+          )
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 48),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const SizedBox(height: 16),
             Text(
-              userAbout ?? 'Loading...', // Display a placeholder or loading text
+              userAbout ?? 'Loading...',
               style: const TextStyle(fontSize: 16),
             ),
           ],
