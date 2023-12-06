@@ -7,11 +7,7 @@ class NumbersWidget extends StatelessWidget {
   Widget build(BuildContext context) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          buildButton(context, '25', 'Years watching anime'),
-          buildDivider(),
           buildButton(context, '100+', 'Animes watched'),
-          buildDivider(),
-          buildButton(context, 'Seinen', 'Favorite genre'),
         ],
       );
   Widget buildDivider() => const SizedBox(

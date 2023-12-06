@@ -9,7 +9,6 @@ class UserPreferences {
     email: 'user_example@gmail.com',
     about:
         'Back-end developer with years of experience in watching anime and judging the quality of it by the first episode, not always on point, but always correct',
-
   );
 
   Future<bool> saveUser (User user) async {

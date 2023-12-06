@@ -5,7 +5,7 @@ class RestRegisterProvider {
   RestRegisterProvider._createInstance();
 
   final Dio _dio = Dio();
-  String baseUrl = "http://localhost:8000/createuser"; // Replace with your actual API base URL
+  String baseUrl = "http://localhost:8000"; // Replace with your actual API base URL
 
   Future<bool> createUser(String username, String password) async {
     try {

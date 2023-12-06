@@ -12,9 +12,6 @@ class RestDataProvider {
 
   final Dio _dio = Dio();
 
-  /*String prefixUrl = "https://si7002s2022-default-rtdb.firebaseio.com";
-  String suffixUrl = "/.json";*/
-
   String prefixUrl = "http://localhost:8000/validateuser?";
   String suffixUrl = "";
 

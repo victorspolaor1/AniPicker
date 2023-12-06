@@ -17,6 +17,21 @@ class SignUp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: SizedBox(
+          width: 200,
+          height: 200,
+          child: Transform.scale(
+            scale: 6,
+              child: IconButton(
+              onPressed: () {},
+              padding: const EdgeInsets.only(left: 25),
+              icon: Image.asset('../asset/images/anipicker-logo.png'),
+            ),
+          ),
+        ),
+      ),
         backgroundColor: const Color.fromARGB(204, 255, 255, 255),
         body: Stack(
           children: [
@@ -33,7 +48,7 @@ class SignUp extends StatelessWidget {
                         children: [
                           
                           const Padding(
-                            padding: EdgeInsets.only(left: 20.0, bottom: 5.0, top: 180),
+                            padding: EdgeInsets.only(left: 20.0, bottom: 5.0, top: 100),
                             child: Text(
                               'Name',
                               style: TextStyle(

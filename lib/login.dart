@@ -1,3 +1,4 @@
+import 'package:anipicker/global.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_borders/input_borders/gradient_outline_input_border.dart';
 import 'providers/validation.dart';
@@ -12,11 +13,25 @@ class Login extends StatelessWidget {
 
   final email = TextEditingController();
   final pass = TextEditingController();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /// backgroundColor: Color.fromRGBO(58, 0, 95, .81),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: SizedBox(
+          width: 200,
+          height: 200,
+          child: Transform.scale(
+            scale: 6,
+              child: IconButton(
+              onPressed: () {},
+              padding: const EdgeInsets.only(left: 25),
+              icon: Image.asset('../asset/images/anipicker-logo.png'),
+            ),
+          ),
+        ),
+      ),
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: Stack(
         children: [
@@ -32,7 +47,7 @@ class Login extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         const Padding(
-                          padding: EdgeInsets.only(left: 20.0, bottom: 5.0, top: 200),
+                          padding: EdgeInsets.only(left: 20.0, bottom: 5.0, top: 130),
                           child: Text(
                             'Username',
                             style: TextStyle(
@@ -84,6 +99,8 @@ class Login extends StatelessWidget {
                           }
                           else {
                             // ignore: use_build_context_synchronously
+                             loggedInUser = idUser;
+                             loggedInUserName = email.text;
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
                           }
                       },

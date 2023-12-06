@@ -1,11 +1,13 @@
+import 'package:anipicker/global.dart';
 import 'package:flutter/material.dart';
 import 'package:anipicker/model/watchedanimes_model.dart';
+import 'package:anipicker/providers/anime.dart';
 
 class AnimeElement {
   String animeName;
-  final DateTime timeOfCreation;
+  int idAnime;
 
-  AnimeElement(this.animeName, this.timeOfCreation);
+  AnimeElement(this.animeName, this.idAnime);
 }
 
 void main() => runApp(const MaterialApp(home: AnimesWatched()));
@@ -18,31 +20,36 @@ class AnimesWatched extends StatefulWidget {
 }
 
 class MyAppState extends State<AnimesWatched> {
-  final List<AnimeElement> _toDoItems = [];
+  AnimeWatchProvider helper = AnimeWatchProvider.helper;
+  //Request anime watched  by user
+
+
+  final List<AnimeElement> _animeItems = [];
+  
   final TextEditingController _controller = TextEditingController();
   final TextEditingController _controller1 = TextEditingController();
 
-  final List<WatchedAnimes> listWatchedAnimes = [
-    WatchedAnimes(id: "AN001", animeWatched: "Kimetsu", date: "02/10/2023"),
-    WatchedAnimes(id: 'AN002', animeWatched: "Naruto", date: "03/11/2022")
-  ];
+  void initState() {
 
-  void _addAnimeItem(String task) {
+    super.initState();
+    var animeList =helper.getWatchedAnime(loggedInUser);
+    animeList.then((value) {   
+      for (var i = 0; i < value.length; i++) {
+        _addAnimeItem(value[i]["animeName"], value[i]["idAnime"]);
+      }
+    });
+  }
+
+  void _addAnimeItem(String task, int id) {
     if (task.isNotEmpty) {
       setState(() {
-        _toDoItems.add(AnimeElement(task, DateTime.now()));
+        _animeItems.add(AnimeElement(task, id));
       });
     }
   }
 
-  void _editAnimeItem(String newText, int index) {
-    setState(() {
-      _toDoItems[index].animeName = newText;
-    });
-  }
-
   void _removeAnimeItem(int index) {
-    setState(() => _toDoItems.removeAt(index));
+    setState(() => _animeItems.removeAt(index));
   }
 
   _editDialog(BuildContext context, int index) {
@@ -59,18 +66,27 @@ class MyAppState extends State<AnimesWatched> {
               padding: const EdgeInsets.all(20),
               height: 180,
               width: 100,
-              child: Column(
+              
+              child: Column(             
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.close, 
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
                   SizedBox(
                       height: 60,
                       child: TextField(
                         controller: _controller,
                         autofocus: true,
-                        /*onSubmitted: (val) {
-                      _addToDoItem(val);
-                      _controller.clear();
-                    },*/
                         style: const TextStyle(
                           fontSize: 18,
                         ),
@@ -88,24 +104,13 @@ class MyAppState extends State<AnimesWatched> {
                         ),
                       )),
                   Container(
-                    height: 65,
+                    height: 35,
                     width: double.infinity,
                     margin: const EdgeInsets.only(
                       top: 5,
                     ),
                     decoration: BoxDecoration(
                       color: Colors.red, borderRadius: BorderRadius.circular(22)),
-                    child: TextButton(
-                      child: const Text(
-                        'Edit',
-                        style: TextStyle(color: Colors.white, fontSize: 16.5
-                        ),
-                      ),
-                      onPressed: () {
-                        _editAnimeItem(_controller.text, index);
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      },
-                    ),
                   ),
                 ],
               ),
@@ -141,17 +146,14 @@ class MyAppState extends State<AnimesWatched> {
             ),
             TextButton(
               child: const Text(
-                'Edit',
-                style: TextStyle(color: Colors.red, fontSize: 16.5),
-              ),
-              onPressed: () => _editDialog(context, index),
-            ),
-            TextButton(
-              child: const Text(
                 'Delete',
                 style: TextStyle(color: Colors.red, fontSize: 16.5),
               ),
-              onPressed: () => _removeAnimeItem(index),
+              onPressed: () => 
+              {
+                helper.deleteWatchedAnime(_animeItems[index].idAnime),
+                _removeAnimeItem(index)
+              },
             ),
           ],
         ),
@@ -159,17 +161,13 @@ class MyAppState extends State<AnimesWatched> {
     );
   }
 
-  int compareElement(AnimeElement a, AnimeElement b) =>
-      a.timeOfCreation.isAfter(b.timeOfCreation) ? -1 : 1;
-
   Widget _buildAnimeWatchedItem() {
-    _toDoItems.sort(compareElement);
     return Expanded(
       child: ListView.builder(
-        itemCount: _toDoItems.length,
+        itemCount: _animeItems.length,
         itemBuilder: (context, index) {
-          if (index < _toDoItems.length) {
-            return _buildEditAnimeWatchedItem(_toDoItems[index].animeName, index);
+          if (index < _animeItems.length) {
+            return _buildEditAnimeWatchedItem(_animeItems[index].animeName, index);
           }
           return null;
         },
@@ -186,10 +184,11 @@ class MyAppState extends State<AnimesWatched> {
             centerTitle: true,
             backgroundColor: Colors.red,
             title: const Text(
-              'My Anime List',
+              'Watched animes',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
+                color: Colors.white
               ),
             ),
           )),
@@ -213,7 +212,7 @@ class MyAppState extends State<AnimesWatched> {
                       controller: _controller1,
                       autofocus: true,
                       onSubmitted: (val) {
-                        _addAnimeItem(val);
+                        _addAnimeItem(val, 0);
                         _controller1.clear();
                       },
                       style: const TextStyle(
@@ -246,10 +245,13 @@ class MyAppState extends State<AnimesWatched> {
                           style: 
                           TextStyle(color: Colors.white, fontSize: 16.5),
                         ),
-                        onPressed: () {
-                                  _addAnimeItem(_controller1.text);
-                                  _controller1.clear();
+                        onPressed: () async {
+                        int idAnime =  (await helper.watchAnime(_controller1.text, loggedInUser));
+                        debugPrint(idAnime.toString());
+                        _addAnimeItem(_controller1.text, idAnime as int);
+                        _controller1.clear();
                         FocusScope.of(context).requestFocus(FocusNode());
+
                         },
                       ),
                   ),
@@ -258,12 +260,6 @@ class MyAppState extends State<AnimesWatched> {
             ),
           ),
           _buildAnimeWatchedItem(),
-          Column(
-            children: List.generate(listWatchedAnimes.length, (index){
-              WatchedAnimes animes = listWatchedAnimes[index];
-              return Text(animes.animeWatched);
-            }),
-          ),
         ]),
       ),
     );
