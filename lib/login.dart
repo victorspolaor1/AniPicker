@@ -71,12 +71,6 @@ class Login extends StatelessWidget {
                           ),
                         ),
                         buildpass(),
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'Forgot Password',
-                          ),
-                        )
                       ],
                     ),
                   ),

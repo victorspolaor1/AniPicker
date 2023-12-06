@@ -10,6 +10,8 @@ class SignUp extends StatelessWidget {
   final pass = TextEditingController();
   final name = TextEditingController();
   final confirmPass = TextEditingController();
+  final email = TextEditingController();
+  final about = TextEditingController();
 
   SignUp({Key? key}) : super(key: key);
 
@@ -48,7 +50,7 @@ class SignUp extends StatelessWidget {
                         children: [
                           
                           const Padding(
-                            padding: EdgeInsets.only(left: 20.0, bottom: 5.0, top: 100),
+                            padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
                             child: Text(
                               'Name',
                               style: TextStyle(
@@ -89,7 +91,33 @@ class SignUp extends StatelessWidget {
                           const Text(
                           'Passwords do not match',
                           style: TextStyle(color: Colors.red),
-                    ),
+                          ),
+                          const SizedBox(height: 10),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
+                            child: Text(
+                              'Email',
+                              style: TextStyle(
+                                fontSize: 23,
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                fontFamily: 'Satisfy-Regular',
+                              ),
+                            ),
+                          ),
+                          buildemail(email),
+                          const SizedBox(height: 10),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
+                            child: Text(
+                              'About',
+                              style: TextStyle(
+                                fontSize: 23,
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                fontFamily: 'Satisfy-Regular',
+                              ),
+                            ),
+                          ),
+                          buildabout(about),
                         ],
                       ),
                     ),
@@ -108,7 +136,7 @@ class SignUp extends StatelessWidget {
                             showAlertDialog(context, 'Please, review the values inserted and try again!', 'Passwords do not match');
                             return;
                         } else {
-                          var idUser = await helper.createUser(name.text, pass.text);
+                          var idUser = await helper.createUser(name.text, pass.text, email.text, about.text);
                           // ignore: unrelated_type_equality_checks
                           if (idUser == 0){
                             // ignore: use_build_context_synchronously
@@ -274,6 +302,67 @@ Widget buildname(var name) => TextFormField(
               ]),
         ),
         prefixIcon: const Icon(Icons.person, color: Color.fromARGB(255, 255, 0, 0)),
+        filled: true,
+        fillColor: const Color.fromRGBO(130, 155, 154, 154),
+      ),
+    );
+
+Widget buildemail(var email) => TextFormField(
+      keyboardType: TextInputType.name,
+      controller: email,
+      style: const TextStyle(color: Colors.black),
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            width: 2.5,
+            color: Color.fromRGBO(255, 0, 0, 1),
+          ),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        focusedBorder: GradientOutlineInputBorder(
+          width: 3.0,
+          borderRadius: BorderRadius.circular(20),
+          gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color.fromRGBO(128, 0, 128, 1),
+                Color.fromRGBO(179, 0, 179, 1),
+                Color.fromRGBO(204, 0, 204, .8)
+              ]),
+        ),
+        prefixIcon: const Icon(Icons.email, color: Color.fromARGB(255, 255, 0, 0)),
+        filled: true,
+        fillColor: const Color.fromRGBO(130, 155, 154, 154),
+      ),
+    );
+
+Widget buildabout(var about) => TextFormField(
+      maxLines: 3,
+      keyboardType: TextInputType.name,
+      controller: about,
+      style: const TextStyle(color: Colors.black),
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            width: 2.5,
+            color: Color.fromRGBO(255, 0, 0, 1),
+          ),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        focusedBorder: GradientOutlineInputBorder(
+          width: 3.0,
+          borderRadius: BorderRadius.circular(20),
+          gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color.fromRGBO(128, 0, 128, 1),
+                Color.fromRGBO(179, 0, 179, 1),
+                Color.fromRGBO(204, 0, 204, .8)
+              ]),
+        ),
+        prefixIcon: const Icon(Icons.description, color: Color.fromARGB(255, 255, 0, 0)),
         filled: true,
         fillColor: const Color.fromRGBO(130, 155, 154, 154),
       ),

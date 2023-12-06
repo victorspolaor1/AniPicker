@@ -7,13 +7,15 @@ class RestRegisterProvider {
   final Dio _dio = Dio();
   String baseUrl = "http://localhost:8000"; // Replace with your actual API base URL
 
-  Future<bool> createUser(String username, String password) async {
+  Future<bool> createUser(String username, String password, String email, String about) async {
     try {
       Response response = await _dio.post(
         "$baseUrl/createuser",
         data: {
           "username": username,
           "password": password,
+          "email": email,
+          "about": about
         },
       );
 
