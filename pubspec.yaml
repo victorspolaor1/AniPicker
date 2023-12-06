@@ -36,6 +36,16 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   gradient_borders: ^0.2.0
+  mysql1: ^0.20.0
+  http: ^1.1.2
+  shared_preferences: any
+  fluttertoast: any
+  provider: any
+  encrypt: any
+  random_string: any
+  get: ^4.3.8
+  dio: any
+  socket_io_client: ^2.0.3+1
 
 dev_dependencies:
   flutter_test:

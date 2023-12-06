@@ -9,8 +9,7 @@ class UserPreferences {
     email: 'user_example@gmail.com',
     about:
         'Back-end developer with years of experience in watching anime and judging the quality of it by the first episode, not always on point, but always correct',
-    isDarkMode: false, 
-    token: ''
+
   );
 
   Future<bool> saveUser (User user) async {
@@ -20,8 +19,6 @@ class UserPreferences {
     prefs.setString('name', user.name);
     prefs.setString('email', user.email);
     prefs.setString('about', user.about);
-    prefs.setString('token', user.token);
-    prefs.setString('isDarkMode', user.isDarkMode as String);
   
     // ignore: deprecated_member_use
     return prefs.commit();
@@ -34,17 +31,12 @@ class UserPreferences {
     String name = prefs.getString('name')!;
     String email = prefs.getString('email')!;
     String about = prefs.getString('about')!;
-    String token = prefs.getString('token')!;
-    bool isDarkMode = prefs.getBool('isDarkMode')!;
-
 
     return User(
       id: id,
       name: name,
       email: email,
       about: about,
-      token: token,
-      isDarkMode: isDarkMode
     );
   }
 
@@ -55,8 +47,6 @@ class UserPreferences {
     prefs.remove('name');
     prefs.remove('email');
     prefs.remove('about');
-    prefs.remove('token');
-    prefs.remove('isDarkMode');
 
   }
 }

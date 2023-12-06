@@ -2,51 +2,28 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:gradient_borders/input_borders/gradient_outline_input_border.dart';
 import 'login.dart';
+import 'providers/register.dart';
 
 // ignore: must_be_immutable
 class SignUp extends StatelessWidget {
-  dynamic email = TextEditingController();
-  dynamic pass = TextEditingController();
-  dynamic name = TextEditingController();
+  RestRegisterProvider helper = RestRegisterProvider.helper;
+  final pass = TextEditingController();
+  final name = TextEditingController();
+  final confirmPass = TextEditingController();
 
   SignUp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         backgroundColor: const Color.fromARGB(204, 255, 255, 255),
         body: Stack(
           children: [
-            
             SafeArea(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    /*
-                    head(),
-                    Container(
-                      padding: const EdgeInsets.only(left: 15),
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        'Register with one of the following options',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: Row(
-                        children: [
-                          buildgoogleicon(),
-                          const SizedBox(width: 30),
-                          buildappleicon(),
-                        ],
-                      ),
-                    ),
-                    */
                     const SizedBox(height: 30),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -54,8 +31,9 @@ class SignUp extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          
                           const Padding(
-                            padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
+                            padding: EdgeInsets.only(left: 20.0, bottom: 5.0, top: 180),
                             child: Text(
                               'Name',
                               style: TextStyle(
@@ -70,19 +48,6 @@ class SignUp extends StatelessWidget {
                           const Padding(
                             padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
                             child: Text(
-                              'Email',
-                              style: TextStyle(
-                                fontSize: 23,
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                fontFamily: 'Satisfy-Regular',
-                              ),
-                            ),
-                          ),
-                          buildemail(email),
-                          const SizedBox(height: 10),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
-                            child: Text(
                               'Password',
                               style: TextStyle(
                                 fontSize: 23,
@@ -92,6 +57,24 @@ class SignUp extends StatelessWidget {
                             ),
                           ),
                           buildpass(pass),
+                          const SizedBox(height: 10),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
+                            child: Text(
+                              'Confirm Password',
+                              style: TextStyle(
+                                fontSize: 23,
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                fontFamily: 'Satisfy-Regular',
+                              ),
+                            ),
+                          ),
+                          buildconfirmpass(confirmPass),
+                          if (pass.text.isNotEmpty && confirmPass.text.isNotEmpty && pass.text != confirmPass.text)
+                          const Text(
+                          'Passwords do not match',
+                          style: TextStyle(color: Colors.red),
+                    ),
                         ],
                       ),
                     ),
@@ -105,9 +88,22 @@ class SignUp extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.red, borderRadius: BorderRadius.circular(22)),
                       child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => Login()));
+                        onPressed: () async {
+                          if (pass.text != confirmPass.text) {
+                            showAlertDialog(context, 'Please, review the values inserted and try again!', 'Passwords do not match');
+                            return;
+                        } else {
+                          var idUser = await helper.createUser(name.text, pass.text);
+                          // ignore: unrelated_type_equality_checks
+                          if (idUser == 0){
+                            // ignore: use_build_context_synchronously
+                            showAlertDialog(context, 'X', 'X');
+                          }
+                          else {
+                            // ignore: use_build_context_synchronously
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+                          }
+                        }
                       },
                       child: const Text(
                         'Register',
@@ -117,7 +113,6 @@ class SignUp extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        
                         Navigator.push(
                           context, 
                           MaterialPageRoute(builder: (context) => Login()),
@@ -135,15 +130,6 @@ class SignUp extends StatelessWidget {
         ));
   }
 }
-/*
-Widget backgroundimage() => Container(
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage('../asset/images/homepage_background.jpg'),
-        fit: BoxFit.cover,
-      )),
-    );
-*/
 
 Widget head() => Padding(
       padding: const EdgeInsets.only(
@@ -186,62 +172,11 @@ Widget head() => Padding(
       ),
     );
 
-/*
-Widget buildgoogleicon() => Expanded(
-      child: Container(
-        height: 70,
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 2.5,
-            color: const Color.fromRGBO(52, 52, 52, 1),
-          ),
-          borderRadius: BorderRadius.circular(20),
-          color: const Color.fromRGBO(30, 30, 30, .51),
-        ),
-        child: MaterialButton(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(22),
-          ),
-          onPressed: () {},
-          child: const Image(
-            image: AssetImage('asset/white-google-logo.png'),
-            width: 30,
-            height: 30,
-          ),
-        ),
-      ),
-    );
-
-Widget buildappleicon() => Expanded(
-      child: Container(
-        height: 70,
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 2.5,
-            color: const Color.fromRGBO(52, 52, 52, 1),
-          ),
-          borderRadius: BorderRadius.circular(20),
-          color: const Color.fromRGBO(30, 30, 30, .51),
-        ),
-        child: MaterialButton(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(22),
-          ),
-          onPressed: () {},
-          child: const Icon(
-            Icons.apple,
-            size: 40,
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
-*/
-Widget buildemail(var email) => TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      controller: email,
-      style: const TextStyle(color: Colors.white),
+Widget buildpass(var pass) => TextFormField(
+      keyboardType: TextInputType.visiblePassword,
+      obscureText: true,
+      controller: pass,
+      style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(
@@ -262,17 +197,17 @@ Widget buildemail(var email) => TextFormField(
                 Color.fromRGBO(204, 0, 204, .8)
               ]),
         ),
-        prefixIcon: const Icon(Icons.email_rounded, color: Color.fromARGB(255, 255, 1, 1)),
+        prefixIcon: const Icon(Icons.lock, color: Color.fromARGB(255, 255, 0, 0)),
         filled: true,
         fillColor: const Color.fromRGBO(130, 155, 154, 154),
       ),
     );
 
-Widget buildpass(var pass) => TextFormField(
+    Widget buildconfirmpass(var confirmPass) => TextFormField(
       keyboardType: TextInputType.visiblePassword,
       obscureText: true,
-      controller: pass,
-      style: const TextStyle(color: Colors.white),
+      controller: confirmPass,
+      style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(
@@ -302,7 +237,7 @@ Widget buildpass(var pass) => TextFormField(
 Widget buildname(var name) => TextFormField(
       keyboardType: TextInputType.name,
       controller: name,
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(
@@ -329,36 +264,27 @@ Widget buildname(var name) => TextFormField(
       ),
     );
 
-/*
-Widget buldbuttonregister() => Container(
-      width: 250,
-      height: 80,
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color.fromRGBO(128, 0, 128, 1),
-              Color.fromRGBO(179, 0, 179, 1),
-              Color.fromRGBO(204, 0, 204, .8)
-            ]),
-        borderRadius: BorderRadius.circular(22),
-      ),
-      child: MaterialButton(
-        onPressed: () {},
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(22),
-        ),
-        splashColor: const Color.fromRGBO(30, 30, 30, .51),
-        child: const Text(
-          'Register',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 40.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Pacifico-Regular',
-          ),
-        ),
-      ),
-    );
-*/
+ showAlertDialog(BuildContext context, String message, String header) { 
+    // configura o button
+      Widget okButton = TextButton(
+        child: const Text("OK"),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      );
+      // configura o  AlertDialog
+      AlertDialog alerta = AlertDialog(
+        title: Text(header),
+        content: Text(message),
+        actions: [
+          okButton,
+        ],
+      );
+      // exibe o dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alerta;
+        },
+      );
+    }

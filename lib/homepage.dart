@@ -55,7 +55,7 @@ class Home extends StatelessWidget {
                         ),
                         onPressed: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => const Login()));
+                              MaterialPageRoute(builder: (context) => Login()));
                         },
                         child: const Row(
                           children: [
@@ -111,7 +111,7 @@ class Home extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const SignUp()));
+                                  builder: (context) => SignUp()));
                         },
                         child: const Row(
                           children: [

@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_borders/input_borders/gradient_outline_input_border.dart';
+import 'providers/validation.dart';
 import 'signup.dart';
 import 'actionspage.dart';
 
+// ignore: must_be_immutable
 class Login extends StatelessWidget {
   Login({Key? key}) : super(key: key);
 
+  RestDataProvider helper = RestDataProvider.helper;
+
   final email = TextEditingController();
   final pass = TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +20,6 @@ class Login extends StatelessWidget {
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: Stack(
         children: [
-
           SafeArea(
             child: SingleChildScrollView(
               child: Column(
@@ -28,9 +32,9 @@ class Login extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         const Padding(
-                          padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
+                          padding: EdgeInsets.only(left: 20.0, bottom: 5.0, top: 200),
                           child: Text(
-                            'Email',
+                            'Username',
                             style: TextStyle(
                               fontSize: 23,
                               color: Color.fromARGB(255, 0, 0, 0),
@@ -72,9 +76,16 @@ class Login extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.red, borderRadius: BorderRadius.circular(22)),
                       child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => const HomePage()));
+                        onPressed: () async {
+                          var idUser = await helper.validateUser(email.text, pass.text);
+                          if (idUser == 0){
+                            // ignore: use_build_context_synchronously
+                            showAlertDialog(context);
+                          }
+                          else {
+                            // ignore: use_build_context_synchronously
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
+                          }
                       },
                       child: const Text(
                         'Login',
@@ -109,63 +120,11 @@ class Login extends StatelessWidget {
           fit: BoxFit.cover,
         )),
       );
-
-/*
-  Widget buildgoogleicon() => Expanded(
-        child: Container(
-          height: 70,
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 2.5,
-              color: const Color.fromRGBO(52, 52, 52, 1),
-            ),
-            borderRadius: BorderRadius.circular(20),
-            color: const Color.fromRGBO(30, 30, 30, .51),
-          ),
-          child: MaterialButton(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(22),
-            ),
-            onPressed: () {},
-            child: const Image(
-              image: AssetImage('../asset/images/white-google-logo.png'),
-              width: 30,
-              height: 30,
-            ),
-          ),
-        ),
-      );
-
-  Widget buildappleicon() => Expanded(
-        child: Container(
-          height: 70,
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 2.5,
-              color: const Color.fromRGBO(52, 52, 52, 1),
-            ),
-            borderRadius: BorderRadius.circular(20),
-            color: const Color.fromRGBO(30, 30, 30, .51),
-          ),
-          child: MaterialButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(22),
-            ),
-            onPressed: () {},
-            child: const Icon(
-              Icons.apple,
-              size: 40,
-              color: Colors.white,
-            ),
-          ),
-        ),
-      );
-*/
+      
   Widget buildemail() => TextFormField(
         keyboardType: TextInputType.emailAddress,
         controller: email,
-        style: const TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(
@@ -194,7 +153,7 @@ class Login extends StatelessWidget {
 
   Widget buildpass() => TextFormField(
         keyboardType: TextInputType.visiblePassword,
-        style: const TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.black),
         controller: pass,
         obscureText: true,
         decoration: InputDecoration(
@@ -223,45 +182,28 @@ class Login extends StatelessWidget {
         ),
       );
 
-/*
-  Widget buldbuttonlogin() => Container(
-        width: 250,
-        height: 80,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: const Color.fromARGB(255, 255, 0, 0),
-            width: 4,
-          ),
-          borderRadius: BorderRadius.circular(22),
-          gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Color.fromRGBO(241, 240, 241, 1),
-                Color.fromRGBO(254, 254, 255, 1),
-                Color.fromRGBO(179, 177, 179, 1),
-                Color.fromRGBO(112, 111, 112, 1)
-              ]),
-        ),
-          
-        child: MaterialButton(
+      showAlertDialog(BuildContext context) { 
+    // configura o button
+        Widget okButton = TextButton(
+          child: const Text("OK"),
           onPressed: () {
-            
+            Navigator.of(context).pop();
           },
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(22),
-          ),
-          splashColor: const Color.fromARGB(130, 255, 0, 0),
-          child: const Text(
-            'Log in',
-            style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Satisfy-Regular',
-            ),
-          ),
-        ),
-      );
-*/
+        );
+        // configura o  AlertDialog
+        AlertDialog alerta = AlertDialog(
+          title: const Text("Authentication failed"),
+          content: const Text("Wrong username and/or password. Please try again"),
+          actions: [
+            okButton,
+          ],
+        );
+        // exibe o dialog
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alerta;
+          },
+        );
+      }
 }

@@ -1,4 +1,5 @@
 class RandomAnime {
+  // ignore: non_constant_identifier_names
   final int mal_id;
   final String image;
   final String title;
